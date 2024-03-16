@@ -1,18 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.23 <0.9.0;
 
-import { Foo } from "../src/Foo.sol";
-
 import { BaseScript } from "./Base.s.sol";
 import { ICreateX, BytecodeRecipient } from "../src/BytecodeRecipient.sol";
 import { IMailbox, BytecodeRouter } from "../src/BytecodeRouter.sol";
-
-/// @dev See the Solidity Scripting tutorial: https://book.getfoundry.sh/tutorials/solidity-scripting
-contract Deploy is BaseScript {
-    function run() public broadcast returns (Foo foo) {
-        foo = new Foo();
-    }
-}
 
 contract DeployBytecodeRecipient is BaseScript {
     function run() public broadcast returns (BytecodeRecipient recipient) {
