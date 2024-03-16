@@ -28,7 +28,7 @@ contract BytecodeRouter {
 
     function deploy(
         bytes calldata bytecode,
-        bytes32 calldata salt,
+        bytes32 salt,
         uint256[] calldata chains,
         bytes[] calldata customHookMetadatas,
         IPostDispatchHook[] calldata customHooks
