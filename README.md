@@ -22,8 +22,8 @@ bun run deploy:handler
 ## Example
 
 - source chain (sepolia):
-  https://sepolia.etherscan.io/tx/0x8715936d6033a0bee64e333b3d04914606da9312ec02b0f0fc4ea9ed8ba516a9
+  https://sepolia.etherscan.io/tx/0x3d0304b5a459ad9a96566a869dd027729cd4921744dc9df705c8f4f10c118597
 - deployment on scroll sepolia:
-  https://sepolia.scrollscan.com/tx/0x7768913db67d7d795a713a8857f3f36831801b2ced118b633626b215e335b5b0
+  https://sepolia.scrollscan.com/tx/0xd2307bd56123b24a121233dbfffb0b2f35c9f5a4d4fbe69710f095a6bfe5ca9e
 - deployment on polygon matic:
-  https://mumbai.polygonscan.com/tx/0x064fbe0edbbbdca0672ab5d3daf7230d7a4876b738b26a81d067cfac220c02bf
+  https://mumbai.polygonscan.com/tx/0x405c3a618ff511b767517c3f381b79cd27130b24aba4172213d8b039ecc71471
