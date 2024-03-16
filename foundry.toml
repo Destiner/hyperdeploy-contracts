@@ -23,6 +23,7 @@
   mainnet = { key = "${API_KEY_ETHERSCAN}" }
   sepolia = { key = "${API_KEY_ETHERSCAN}" }
   scroll_sepolia = { key = "${API_KEY_SCROLLSCAN}" }
+  polygon_mumbai = { key = "${API_KEY_POLYGONSCAN}" }
 
 [fmt]
   bracket_spacing = true
@@ -38,3 +39,4 @@
   mainnet = "https://eth-mainnet.g.alchemy.com/v2/${API_KEY_ALCHEMY}"
   sepolia = "https://eth-sepolia.g.alchemy.com/v2/${API_KEY_ALCHEMY}"
   scroll_sepolia = "https://sepolia-rpc.scroll.io"
+  polygon_mumbai = "https://polygon-mumbai.g.alchemy.com/v2/${API_KEY_ALCHEMY}"
