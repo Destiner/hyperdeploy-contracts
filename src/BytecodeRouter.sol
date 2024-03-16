@@ -34,11 +34,13 @@ contract BytecodeRouter {
         IPostDispatchHook[] calldata customHooks
     )
         external
+        payable
         returns (bytes32[] memory messageIds)
     {
         messageIds = new bytes32[](chains.length);
         for (uint256 i = 0; i < chains.length; i++) {
-            messageIds[i] = MALIBOX.dispatch(
+            // TODO use quoteDispatch to estimate the fee
+            messageIds[i] = MALIBOX.dispatch{ value: msg.value }(
                 uint32(chains[i]),
                 bytes32(uint256(uint160(RECIPIENT_ADDRESS))),
                 abi.encode(bytecode, salt),
@@ -46,5 +48,12 @@ contract BytecodeRouter {
                 customHooks[i]
             );
         }
+        // Pass any leftover funds back to the message sender
+        if (msg.value > 0) {
+            // payable(msg.sender).transfer(msg.value);
+            payable(msg.sender).call{ value: msg.value }("");
+        }
     }
+
+    receive() external payable { }
 }
