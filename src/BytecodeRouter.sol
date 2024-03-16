@@ -1,7 +1,7 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.23;
 
-import { BytecodeRecipient } from "./BytecodeRecipient.sol";
-
+// solhint-disable-next-line no-empty-blocks
 interface IPostDispatchHook { }
 
 interface IMailbox {
@@ -57,11 +57,6 @@ contract BytecodeRouter {
             messageIds[i] = MAILBOX.dispatch{ value: protocolFee }(
                 uint32(chains[i]), recipientAddresses[i], messageBody, customHookMetadatas[i], customHooks[i]
             );
-        }
-        // Pass any leftover funds back to the message sender
-        if (msg.value > 0) {
-            // payable(msg.sender).transfer(msg.value);
-            payable(msg.sender).call{ value: msg.value }("");
         }
     }
 

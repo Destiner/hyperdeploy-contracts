@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.23;
 
 interface IMessageRecipient {
@@ -23,7 +24,7 @@ contract BytecodeRecipient is IMessageRecipient {
         CREATEX = createx;
     }
 
-    function handle(uint32 _origin, bytes32 _sender, bytes calldata message) external payable override {
+    function handle(uint32, bytes32, bytes calldata message) external payable override {
         (bytes memory bytecode, bytes32 salt) = abi.decode(message, (bytes, bytes32));
         address newContract = CREATEX.deployCreate2(salt, bytecode);
         emit Deployed(newContract);
