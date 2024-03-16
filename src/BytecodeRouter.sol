@@ -1,5 +1,7 @@
 pragma solidity 0.8.23;
 
+import { BytecodeRecipient } from "./BytecodeRecipient.sol";
+
 interface IPostDispatchHook { }
 
 interface IMalibox {
@@ -15,22 +17,18 @@ interface IMalibox {
         returns (bytes32 messageId);
 }
 
-interface IHandler {
-    function handle(bytes calldata message) external;
-}
-
 contract BytecodeRouter {
     IMalibox public immutable MALIBOX;
-    address public immutable HANDLER_ADDRESS;
+    address public immutable RECIPIENT_ADDRESS;
 
-    constructor(IMalibox mailbox, IHandler handler) {
+    constructor(IMalibox mailbox, BytecodeRecipient recipient) {
         MALIBOX = mailbox;
-        HANDLER_ADDRESS = address(handler);
+        RECIPIENT_ADDRESS = address(recipient);
     }
 
     function deploy(
         bytes calldata bytecode,
-        bytes calldata salt,
+        bytes32 calldata salt,
         uint256[] calldata chains,
         bytes[] calldata customHookMetadatas,
         IPostDispatchHook[] calldata customHooks
@@ -42,7 +40,7 @@ contract BytecodeRouter {
         for (uint256 i = 0; i < chains.length; i++) {
             messageIds[i] = MALIBOX.dispatch(
                 uint32(chains[i]),
-                bytes32(uint256(uint160(HANDLER_ADDRESS))),
+                bytes32(uint256(uint160(RECIPIENT_ADDRESS))),
                 abi.encode(bytecode, salt),
                 customHookMetadatas[i],
                 customHooks[i]

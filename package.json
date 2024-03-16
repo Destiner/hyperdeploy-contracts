@@ -28,7 +28,7 @@
   "scripts": {
     "clean": "rm -rf cache out",
     "build": "forge build",
-    "deploy:handler": "forge script script/Deploy.s.sol:DeployBytecodeHandler --rpc-url scroll_sepolia --broadcast --verify -vvvv",
+    "deploy:recipient": "forge script script/Deploy.s.sol:DeployBytecodeRecipient --rpc-url scroll_sepolia --broadcast --verify -vvvv",
     "deploy:router": "forge script script/Deploy.s.sol:DeployBytecodeRouter --rpc-url sepolia --broadcast --verify -vvvv",
     "lint": "bun run lint:sol && bun run prettier:check",
     "lint:sol": "forge fmt --check && bun solhint {script,src,test}/**/*.sol",

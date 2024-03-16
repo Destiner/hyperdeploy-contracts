@@ -1,7 +1,7 @@
 pragma solidity 0.8.23;
 
-interface IHandler {
-    function handle(bytes calldata message) external;
+interface IMessageRecipient {
+    function handle(uint32 _origin, bytes32 _sender, bytes calldata _message) external payable;
 }
 
 interface ICreateX {
@@ -14,7 +14,7 @@ interface ICreateX {
     function deployCreate3(bytes memory initCode) external payable returns (address newContract);
 }
 
-contract BytecodeHandler is IHandler {
+contract BytecodeRecipient is IMessageRecipient {
     event Deployed(address newContract);
 
     ICreateX public immutable CREATEX;
@@ -23,9 +23,9 @@ contract BytecodeHandler is IHandler {
         CREATEX = createx;
     }
 
-    function handle(bytes calldata message) external {
-        (bytes memory bytecode, bytes32 salt) = abi.decode(message, (bytes, bytes32));
-        address newContract = CREATEX.deployCreate2(salt, bytecode);
-        emit Deployed(newContract);
+    function handle(uint32 _origin, bytes32 _sender, bytes calldata message) external payable override {
+        // (bytes memory bytecode, bytes32 salt) = abi.decode(message, (bytes, bytes32));
+        // address newContract = CREATEX.deployCreate2(salt, bytecode);
+        // emit Deployed(newContract);
     }
 }
