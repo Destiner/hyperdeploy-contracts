@@ -18,8 +18,6 @@ contract DeployBytecodeRouter is BaseScript {
         // Well-known static address
         IMailbox mailbox = IMailbox(0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766);
         // Taken as a recipient deployment artifact, dynamic
-        // BytecodeRecipient recipient = BytecodeRecipient(payable(0xD0B7BFE8bc7a635Ce2E514c1b4Eb5C9238Ef9998));
-        // router = new BytecodeRouter(mailbox, recipient);
         router = new BytecodeRouter(mailbox);
     }
 }
