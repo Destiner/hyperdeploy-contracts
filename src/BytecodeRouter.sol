@@ -4,7 +4,7 @@ import { BytecodeRecipient } from "./BytecodeRecipient.sol";
 
 interface IPostDispatchHook { }
 
-interface IMalibox {
+interface IMailbox {
     function dispatch(
         uint32 destinationDomain,
         bytes32 recipientAddress,
@@ -15,20 +15,31 @@ interface IMalibox {
         external
         payable
         returns (bytes32 messageId);
+
+    function quoteDispatch(
+        uint32 destinationDomain,
+        bytes32 recipientAddress,
+        bytes calldata body,
+        bytes calldata customHookMetadata,
+        IPostDispatchHook customHook
+    )
+        external
+        view
+        returns (uint256 protocolFee);
 }
 
 contract BytecodeRouter {
-    IMalibox public immutable MALIBOX;
-    address public immutable RECIPIENT_ADDRESS;
+    IMailbox public immutable MAILBOX;
 
-    constructor(IMalibox mailbox, BytecodeRecipient recipient) {
-        MALIBOX = mailbox;
-        RECIPIENT_ADDRESS = address(recipient);
+    constructor(IMailbox mailbox) {
+        MAILBOX = mailbox;
     }
 
     function deploy(
         bytes calldata bytecode,
         bytes32 salt,
+        // TODO make an immutable chainId => recipient mapping
+        bytes32[] calldata recipientAddresses,
         uint256[] calldata chains,
         bytes[] calldata customHookMetadatas,
         IPostDispatchHook[] calldata customHooks
@@ -37,15 +48,14 @@ contract BytecodeRouter {
         payable
         returns (bytes32[] memory messageIds)
     {
+        bytes memory messageBody = abi.encode(bytecode, salt);
         messageIds = new bytes32[](chains.length);
         for (uint256 i = 0; i < chains.length; i++) {
-            // TODO use quoteDispatch to estimate the fee
-            messageIds[i] = MALIBOX.dispatch{ value: msg.value }(
-                uint32(chains[i]),
-                bytes32(uint256(uint160(RECIPIENT_ADDRESS))),
-                abi.encode(bytecode, salt),
-                customHookMetadatas[i],
-                customHooks[i]
+            uint256 protocolFee = MAILBOX.quoteDispatch(
+                uint32(chains[i]), recipientAddresses[i], messageBody, customHookMetadatas[i], customHooks[i]
+            );
+            messageIds[i] = MAILBOX.dispatch{ value: protocolFee }(
+                uint32(chains[i]), recipientAddresses[i], messageBody, customHookMetadatas[i], customHooks[i]
             );
         }
         // Pass any leftover funds back to the message sender
