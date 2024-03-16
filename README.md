@@ -1,5 +1,8 @@
 # Hyperdeploy Contracts
 
+> [!NOTE]  
+> For the application, check out [HyperDeploy App](https://github.com/Destiner/hyperdeploy-app).
+
 ## Development
 
 ```sh
